@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <h2>JSON 파일을 읽어들이는 예제</h2>
+    <div id="app">
+        <input type="file" v-on:change = 'onFileChange'>
+        <p>읽어 들인 데이터 = {{loadData}}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el : '#app',
+            data(){
+                return{
+                    loadData : ''
+                }
+            },
+            methods : {
+                // JSON 파일 읽어들이는 함수
+                onFileChange(event){
+                    let file = event.target.files[0];
+                    if(file){
+                        // 텍스트 또는 JSON 파일을 읽어들이는 객체
+                        let reader = new FileReader();
+                        let vm = this;
+                        let json = '';
+                        // 텍스트로서 JSON 파일을 읽어들이는 함수
+                        reader.readAsText(file);
+
+                        reader.onload = function(event){
+                            // 선택한 파일을 result 속성이 가지고 있다
+                            json = JSON.parse(event.target.result);
+                            vm.loadData = json;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>

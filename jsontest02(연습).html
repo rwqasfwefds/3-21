@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <h2>JSON 파일을 읽어들여 트렌지션 효과를 주는 예제</h2>
+    <div id="app">
+        <transition-group>
+            <div v-for = 'item in dataArray' v-bind:key = 'item.title'>
+                <my-product v-bind:object = 'item'></my-product>
+            </div>
+        </transition-group>
+
+        <button v-on:click = 'sortData'>정렬</button>
+        <button v-on:click = 'shuffleData'>셔플</button>
+        <input type="file" v-on:change = 'onFileChange'>
+    </div>
+
+    <script>
+        // 자식 컴포넌트 객체 정의
+        let Mycomponent = {
+            props : ['object'],
+            template : 
+            /* html */
+            `
+            <div style = 'width : 300px; backgroundColor : #ffddaa;'>
+                <p style = 'backgroundColor : #ffa95e'>{{object.title}}</p>
+                <p>해설 : {{object.body}}</p>
+            </div>
+            `
+        }
+
+        new Vue({
+            el : '#app',
+            data(){
+                return{
+                    dataArray : [
+                        {title : 'AAA', body : 'aaa'},
+                        {title : 'BBB', body : 'bbb'},
+                        {title : 'CCC', body : 'ccc'}
+                    ]
+                }
+            },
+            components : {
+                    'my-product' : Mycomponent
+                },
+            methods : {
+                // 오름차순 정렬
+                sortData(){
+                    // return 값이 this.dataArray에 새로 정렬된 객채배열이 들어 감
+                    this.dataArray =  _.orderBy(this.dataArray, 'title', 'asc')
+                },
+                // 목록 셔플
+                shuffleData(){
+                    // return 값이 this.dataArray에 새로 정렬된 객채배열이 들어 감
+                    this.dataArray = _.shuffle(this.dataArray)
+                },
+                // JSON 파일 업로드해서 객체배열로 저장
+                onFileChange(event){
+                    let file = event.target.files[0];
+                    if(file){
+                        let reader = new FileReader();
+                        let vm = this;
+                        let json = '';
+                        reader.readAsText(file);
+
+                        reader.onload = function(event){
+                            // parse = 문자열 -> 객체
+                            json = JSON.parse(event.target.result);
+                            vm.dataArray = json;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <style>
+      .v-move {
+        transition: transform 1s;
+      }
+    </style>
+    
+</body>
+</html>

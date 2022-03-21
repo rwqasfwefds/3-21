@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        /* 1초 동안 투명도, 위치 변화 */
+        .v-enter-active, .v-leave-active{
+            /* 각 항목별로도 쌉가능 */
+            transition: opacity 1s, transform 1s;
+        }
+        /* 출력 할때는 왼쪽에서 오른쪽으로 */
+        .v-enter{
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        /* 사라질때는 아래로 */
+        .v-leave-to{
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 토글 버튼 -->
+        <p><button v-on:click = 'show = !show'>변경하기</button></p>
+        <transition>
+            <div v-show = 'show'>
+                <img src="./img/android.png" alt="android 이미지">
+            </div>
+        </transition>
+    </div>
+
+    <script>
+        new Vue({
+            el : '#app',
+            data : {
+                show : true
+            }
+        });
+    </script>
+    
+</body>
+</html>
