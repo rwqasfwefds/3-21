@@ -37,6 +37,7 @@
 
                         reader.onload = function(event){
                             // 선택한 파일을 result 속성이 가지고 있다
+                            // parse = 문자열 -> 객체
                             json = JSON.parse(event.target.result);
                             vm.loadData = json;
                         }
